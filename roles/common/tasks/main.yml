@@ -1,0 +1,25 @@
+---
+- name: Update apt cache
+  apt: update_cache=yes
+       cache_valid_time=86400 # don't update if already done within 1 day
+
+- name: Ensure git installed
+  apt: pkg=git
+
+- name: Ensure ntp installed
+  apt: pkg=ntp
+
+- name: Ensure vim installed
+  apt: pkg=vim
+
+- name: Ensure curl installed
+  apt: pkg=curl
+
+- name: Ensure build packages installed
+  apt: pkg={{ item }}
+  with_items:
+    - autoconf
+    - build-essential
+
+- name: Ensure python-software-properties installed so the apt_repository module will work properly
+  apt: pkg=python-software-properties

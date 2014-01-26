@@ -1,0 +1,59 @@
+---
+- name: Ensure convenience aliases added
+  copy: src=.bash_aliases
+        dest=/home/{{ app_user }}
+        owner={{ app_user }}
+        group={{ app_user }}
+        mode=644
+
+- name: Ensure app directory created
+  file: path={{ app_home }}
+        state=directory
+        owner={{ app_user }}
+        group={{ app_user }}
+        mode=775
+
+- name: Ensure symlink from home dir to projects dir created
+  file: path=/home/{{ app_user }}/projects
+        src={{ app_home }}
+        state=link
+
+- name: Ensure Gemfile in app directory
+  copy: src=Gemfile
+        dest={{ app_home }}
+        owner={{ app_user }}
+        group={{ app_user }}
+        mode=664
+
+- name: Install gems via bundler
+  shell: bundle install
+         chdir={{ app_home }}
+  sudo_user: "{{ app_user }}"
+
+- name: Ensure PrinceXML downloaded
+  get_url: url=http://www.princexml.com/download/prince_9.0-4_ubuntu12.04_amd64.deb
+           dest=/usr/local/src/prince_9.0-4_ubuntu12.04_amd64.deb
+
+- name: Ensure PrinceXML dependencies installed
+  apt: pkg={{ item }} state=present
+  with_items:
+    - libjpeg-turbo8
+    - libjpeg8
+    - ttf-dejavu-core
+    - ttf-bitstream-vera
+    - ttf-freefont
+    - gsfonts
+    - libfontenc1
+    - libxfont1
+    - x11-common
+    - xfonts-encodings
+    - xfonts-utils
+    - gsfonts-x11
+    - fontconfig-config
+    - libtiff4
+    - libgif4
+    - libcurl3
+    - libfontconfig1
+
+- name: Ensure PrinceXML installed
+  shell: dpkg --install /usr/local/src/prince_9.0-4_ubuntu12.04_amd64.deb

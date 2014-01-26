@@ -1,0 +1,8 @@
+---
+- hosts: vagrant
+  sudo: yes
+
+  roles:
+    - common
+    - ruby
+    - { role: app, app_user: 'vagrant', app_home: '/vagrant/projects' }
