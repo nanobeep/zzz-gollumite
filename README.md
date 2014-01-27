@@ -26,8 +26,8 @@ Gollumite is a setup for easily editing content in order to produce pretty html 
 - `vagrant ssh` - this will log you into the new VM and has ssh key forwarding (required if you use gollum commit hooks)
 - `git config --global user.email "me@here.com"`
 - `cd projects`
-- `git clone git@github.com:your-username/your-project.git`
-- `cd your-project`
+- `git clone git@github.com:your-username/your-gollum-project.git`
+- `cd your-gollum-project`
 
 
 ## Using gollumite
